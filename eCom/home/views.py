@@ -3,9 +3,12 @@ from .models import *
 
 # Create your views here.
 
-def base(request):
-    return render(request, "base.html")
+def base():
+    views = {}
+    views['category'] = Category.objects.all()
+    return views
+
 
 def Home(request):
-
-    return render(request, "index.html")
+    views = base()
+    return render(request, "index.html", views)

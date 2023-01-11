@@ -14,3 +14,9 @@ class SubCategory(models.Model):
 
     def __str__(self):
         return self.name
+
+class Product(models.Model):
+    image = models.ImageField(upload_to='ecommerce/pimg')
+    name = models.CharField(max_length=100)
+    price = models.IntegerField()
+    date = models.DateField(auto_now_add=True)
