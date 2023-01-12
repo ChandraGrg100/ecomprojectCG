@@ -6,6 +6,7 @@ from .models import *
 def base():
     views = {}
     views['category'] = Category.objects.all()
+    views['product'] = Product.objects.all()
     return views
 
 
