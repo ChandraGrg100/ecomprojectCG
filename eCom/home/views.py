@@ -17,14 +17,20 @@ def base(request):
 
 def Index(request):
     category = Category.objects.all()
+    brand = Brand.objects.all()
+    brandID = request.GET.get('brand')
     categoryID = request.GET.get('category')
     if categoryID:
         product = Product.objects.filter(subcategory=categoryID).order_by('-id')
+    elif brandID:
+        product = Product.objects.filter(brand=brandID).order_by('-id')
+
     else:
         product = Product.objects.all()
     context = {
         "category":category,
         "product":product,
+        "brand":brand,
     }
     return render(request, "index.html", context)
 
@@ -129,4 +135,49 @@ def CheckOut(request):
         request.session['cart'] = {}  #clear cart after checkout
         return redirect('index')
 
-    return HttpResponse("index")
+def YourOrder(request):
+    uid = request.session.get('_auth_user_id')
+    user = User.objects.get(pk=uid)
+
+    order = Order.objects.filter(user=user)
+    context ={
+        'order':order,
+    }
+
+    return render(request,'order.html',context)
+
+def Shop(request):
+    category = Category.objects.all()
+    brand = Brand.objects.all()
+    brandID = request.GET.get('brand')
+    categoryID = request.GET.get('category')
+    if categoryID:
+        product = Product.objects.filter(subcategory=categoryID).order_by('-id')
+    elif brandID:
+        product = Product.objects.filter(brand=brandID).order_by('-id')
+    else:
+        product = Product.objects.all()
+
+    context= {
+        'category':category,
+        'brand':brand,
+        'product':product,
+    }
+    return render(request,"shop.html",context)
+
+def ProductDetail(request,id):
+    product = Product.objects.filter(id=id).first()
+    context = {
+        "product":product
+    }
+    return render(request,'product-details.html',context)
+
+def Search(request):
+    query = request.GET['query']
+    product = Product.objects.filter(name__icontains=query)
+    brand = Brand.objects.filter(name__icontains=query)
+    context = {
+        'product':product,
+        'brand':brand,
+    }
+    return render(request,'search.html',context)

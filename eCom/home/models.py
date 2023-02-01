@@ -20,12 +20,24 @@ class SubCategory(models.Model):
     def __str__(self):
         return self.name
 
+class Brand(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
 class Product(models.Model):
+    Availability = (('In stock','In stock'),('Out of Stock','Out of Stock'))
+    Condition = (('New','New'),('Like New','Like New'),('Used','Used'))
+
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=False, default='')
     subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE, null=False, default='')
+    brand = models.ForeignKey(Brand,on_delete=models.CASCADE,null=True)
     image = models.ImageField(upload_to='ecommerce/pimg')
     name = models.CharField(max_length=100)
     price = models.IntegerField()
+    Availability = models.CharField(choices=Availability, null=True, max_length=100)
+    Condition = models.CharField(choices=Condition, null=True, max_length=100)
     date = models.DateField(auto_now_add=True)
 
     def __str__(self):
@@ -81,3 +93,4 @@ class Order(models.Model):
 
     def __str__(self):
         return self.product
+

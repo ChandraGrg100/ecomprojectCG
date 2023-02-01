@@ -7,7 +7,7 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path("admin", admin.site.urls),
+    path("admin/", admin.site.urls),
     path("", views.Index, name="index"),
 
     path('signup',views.signup,name='signup'),
@@ -27,6 +27,17 @@ urlpatterns = [
     path("contact_us",views.Contact,name="contact"),
 
     #checkout
-    path("checkout/",views.CheckOut,name="checkout")
+    path("checkout/",views.CheckOut,name="checkout"),
 
+    #order
+    path("order/",views.YourOrder,name='order'),
+
+    #shop Product
+    path("shop/",views.Shop,name="shop"),
+
+    #product detail
+    path("shop/<str:id>",views.ProductDetail,name="product_detail"),
+
+    #search
+    path('search/',views.Search,name="search"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
